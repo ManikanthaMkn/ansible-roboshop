@@ -69,5 +69,5 @@
       msg: "{{ catalogue_output }}"
 
   - name: Load Products data
-    ansible.builtin.command: mongosh --host mongodb.arohvya.online </app/db/master-data.js
+    ansible.builtin.shell: mongosh --host mongodb.arohvya.online < /app/db/master-data.js
     when: catalogue_outputstdout | int < 0
