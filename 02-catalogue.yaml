@@ -31,7 +31,7 @@
       dest: /tmp/catalogue.zip
 
   - name: Extract Catalogue Code
-    ansuble.builtin.unarchive:
+    ansible.builtin.unarchive:
       src: /tmp/catalogue.zip
       dest: /app
       remote_src: yes
@@ -40,4 +40,12 @@
     community.general.npm:
       path: /app
 
-  
+  - name: Copy Catalogue service to System directory
+    ansible.builtin.systemd_service:
+      daemon_reload: true
+
+  - name: Start and Enable Catalogue
+    ansible.builtin.service:
+      name: catalogue
+      state: started
+      enabled: yes
