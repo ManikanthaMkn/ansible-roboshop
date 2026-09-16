@@ -59,9 +59,15 @@
     ansible.builtin.dnf:
       name: mongodb-mongosh
       state: present
-      
+  
+  - name: Check Products Loaded or Not
+    ansible.builtin.command: mongosh --host mongodb.arohvya.online --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
+    register: catalogue_output
+
+  - name: print catalogue output
+    ansible.builtin.debug:
+      msg: "{{ catalogue_output }}"
+
   - name: Load Products data
-    community.mongodb.mongodb_shell:
-      file: "/app/db/master-data.js"
-      idempotent: yes
-      login_host: mongodb.arohvya.online
+    ansible.builtin.command: mongosh --host mongodb.arohvya.online </app/db/master-data.js
+    when: catalogue_output.stdout < 0
