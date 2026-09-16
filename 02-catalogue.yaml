@@ -70,4 +70,4 @@
 
   - name: Load Products data
     ansible.builtin.command: mongosh --host mongodb.arohvya.online </app/db/master-data.js
-    when: catalogue_output.stdout < 0
+    when: catalogue_outputstdout | int < 0
