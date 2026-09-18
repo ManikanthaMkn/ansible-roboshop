@@ -73,12 +73,12 @@
       state: started
       enabled: yes
 
-  - name: Connect to MySQL server using app user
-    community.mysql.mysql_info:
-      login_user: shipping
-      login_password: RoboShop@1
-      login_hosts: mysql.arohvya.online
-      login_db: cities
+  # - name: Connect to MySQL server using app user
+  #   community.mysql.mysql_info:
+  #     login_user: shipping
+  #     login_password: RoboShop@1
+  #     login_hosts: mysql.arohvya.online
+  #     login_db: cities
   
   - name: Import data
     tags: # To run this particular task we can use #tags option, To run this one in terminal in the end use -t and the tag name import -t import
