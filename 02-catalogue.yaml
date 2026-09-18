@@ -1,15 +1,16 @@
 - name: configure catalogue component
   hosts: catalogue
   become: yes
-  tasks:
-  - name: disable default nodejs
-    ansible.builtin.command: dnf module disable nodejs -y
 
-  # 1. Record the exact start time before any work begins
+# 1. Record the exact start time before any work begins
   pre_tasks:
     - name: Record playbook start time
       ansible.builtin.set_fact:
         playbook_start_time: "{{ now(utc=true).strftime('%s') }}"
+
+  tasks:
+  - name: disable default nodejs
+    ansible.builtin.command: dnf module disable nodejs -y
 
   - name: enable nodejs:20
     ansible.builtin.command: dnf module enable nodejs:20 -y
