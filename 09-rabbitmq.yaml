@@ -1,0 +1,45 @@
+- name: Setup Rabbitmq Componant
+  hosts: rabbitmq
+  become: yes
+
+# 1. Record the exact start time before any work begins
+  pre_tasks:
+    - name: Record playbook start time
+      ansible.builtin.set_fact:
+        playbook_start_time: "{{ now(utc=true).strftime('%s') }}"
+
+  tasks:
+  - name: Copy rabbitmq repo
+    ansible.builtin.copy:
+      src: rabbitmq.repo
+      dest: /etc/yum.repos.d/rabbitmq.repo
+
+  - name: Install rabbitmq-server
+    ansible.builtin.dnf:
+      name: rabbitmq-server
+      state: installed
+
+  - name: Enable and Start Rabbitmq
+    ansible.builtin.service:
+      name: rabbitmq-server
+      state: started
+      enabled: yes
+
+  - name: Create Rabbitmq Service
+    community.rabbitmq.rabbitmq_user:
+      user: roboshop
+      password: roboshop123
+      permissions:
+        - vhost: /
+          configure_priv: .*
+          read_priv: .*
+          write_priv: .*
+      state: present
+
+# 2. Run this at the very end to calculate and display the total duration
+  post_tasks:
+    - name: Display total execution time
+      vars:
+        playbook_end_time: "{{ now(utc=true).strftime('%s') }}"
+      ansible.builtin.debug:
+        msg: "Total playbook execution time: {{ (playbook_end_time | int) - (playbook_start_time | int) }} seconds."
