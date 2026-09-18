@@ -1,0 +1,24 @@
+- name: configure MySQL componant
+  hosts: mysql
+  become: yes
+  
+# 1. Record the exact start time before any work begins
+  pre_tasks:
+    - name: Record playbook start time
+      ansible.builtin.set_fact:
+        playbook_start_time: "{{ now(utc=true).strftime('%s') }}"
+
+  tasks:
+  - name: Install MySQL server
+    ansible:builtin:dnf:
+      name: mysql-server
+      state: installed
+
+  - name: Start MySQL server
+    ansible.builtin.service:
+      name: mysqld
+      state: started
+      enabled: yes
+
+  - name: Setup root password
+    ansible.builtin.command: mysql_secure_installation --set-root-pass RoboShop@1
