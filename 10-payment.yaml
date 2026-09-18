@@ -11,7 +11,7 @@
   tasks:
   - name: Install Python packages
     ansible.builtin.dnf:
-      name:
+      name: "{{ item }}"
       state: installed
     loop:
     - python3
