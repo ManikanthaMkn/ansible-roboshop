@@ -1,6 +1,13 @@
 - name: configuring mongodb server
   become: yes
   hosts: mongodb
+
+# 1. Record the exact start time before any work begins
+  pre_tasks:
+    - name: Record playbook start time
+      ansible.builtin.set_fact:
+        playbook_start_time: "{{ now(utc=true).strftime('%s') }}"
+
   tasks:
   - name: copy mongodb repo
     ansible.builtin.copy:
@@ -29,5 +36,10 @@
       name: mongod
       state: restarted
       
-
-
+# 2. Run this at the very end to calculate and display the total duration
+  post_tasks:
+    - name: Display total execution time
+      vars:
+        playbook_end_time: "{{ now(utc=true).strftime('%s') }}"
+      ansible.builtin.debug:
+        msg: "Total playbook execution time: {{ (playbook_end_time | int) - (playbook_start_time | int) }} seconds."
