@@ -96,6 +96,8 @@
     - /app/db/master-data.sql
 
   - name: Restart Shipping
+    tags:
+    - restart
     ansible.builtin.service:
       state: restarted
       name: shipping
