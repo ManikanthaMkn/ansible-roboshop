@@ -1,0 +1,44 @@
+- name: Configure Shipping Componant
+  hosts: shipping
+  become: yes
+
+# 1. Record the exact start time before any work begins
+  pre_tasks:
+    - name: Record playbook start time
+      ansible.builtin.set_fact:
+        playbook_start_time: "{{ now(utc=true).strftime('%s') }}"
+
+  tasks:
+  - name: Install Maven
+    ansible.builtin.dnf:
+      name: maven
+      state: installed
+
+  - name: Create app directory
+    ansible.builtin.file:
+    path: /app
+    state: directory
+  
+  - name: Create roboshop system user
+    ansible.builtin.user:
+      name: roboshop
+      shell: /sbin/nologin
+      system: true
+      home: /app
+
+  - name: Download Shipping Code
+    ansible.builtin.get_url:
+      url: https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip
+      dest: /tmp/shipping.zip
+
+  - name: Extract shipping code
+    ansible.builtin.unarchive:
+    src: /tmp/shipping.zip
+    dest: /app
+    remote_src: yes
+
+  - name: Install Maven dependencies
+    ansible.builtin.command:
+    
+
+  

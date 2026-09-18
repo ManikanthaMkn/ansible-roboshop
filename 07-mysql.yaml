@@ -22,3 +22,11 @@
 
   - name: Setup root password
     ansible.builtin.command: mysql_secure_installation --set-root-pass RoboShop@1
+
+# 2. Run this at the very end to calculate and display the total duration
+  post_tasks:
+    - name: Display total execution time
+      vars:
+        playbook_end_time: "{{ now(utc=true).strftime('%s') }}"
+      ansible.builtin.debug:
+        msg: "Total playbook execution time: {{ (playbook_end_time | int) - (playbook_start_time | int) }} seconds."
