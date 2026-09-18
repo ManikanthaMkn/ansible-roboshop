@@ -81,6 +81,8 @@
       login_db: cities
   
   - name: Import data
+    tags: # To run this particular task we can use #tags option, To run this one in terminal in the end use -t and the tag name import -t import
+    - import 
     community.mysql.mysql_db:
       name: all
       login_user: root
