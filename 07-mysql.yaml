@@ -10,7 +10,7 @@
 
   tasks:
   - name: Install MySQL server
-    ansible:builtin:dnf:
+    ansible.builtin.dnf:
       name: mysql-server
       state: installed
 
