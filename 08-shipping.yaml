@@ -87,7 +87,7 @@
       name: all
       login_user: root
       login_password: RoboShop@1
-      login_hosts: mysql.arohvya.online
+      login_host: mysql.arohvya.online
       state: import
       target: "{{ item }}"
     loop:
